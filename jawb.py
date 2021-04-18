@@ -76,7 +76,7 @@ def pick_the_value(request, data):
 
 
 def read_from_file(filepath):
-    with open(filepath, "r") as f:
+    with open(filepath, "r", encoding="iso-8859-1") as f:
         for line in f:
             yield line.rstrip()
 
@@ -102,10 +102,11 @@ def worker(url, headers, username_val, username_name,  passwords, password_name,
                 data[custom[0]] = custom[1]
         if ip_spoof:
             headers['X-Forwarded-For'] = generate_ip()
+        print(f"\033[2K\rtrying: {password_value}", end="")
         r = s.post(url=url, headers=headers, data=data)
 
         if in_text_check(html=r.text, text=in_text_check_val):
-            print(" [ok] Credentials found:\t%s:%s" % (username_val, password_value))
+            print("\n [ok] Credentials found:\t%s:%s" % (username_val, password_value))
             WORK_ALL = False
 
 
